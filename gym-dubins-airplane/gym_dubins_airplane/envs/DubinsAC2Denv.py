@@ -11,18 +11,6 @@ import random
 from config import Config
 from ACEnvironment import ACEnvironment2D
 
-# class Image(rendering.Geom):
-    # def __init__(self, fname, width, height):
-        # Geom.__init__(self)
-        # self.set_color(1.0, 1.0, 1.0)
-        # self.width = width
-        # self.height = height
-        # img = pyglet.image.load(fname)
-        # self.img = img
-        # self.flip = False
-    # def render1(self):
-        # self.img.blit(-self.width/2, -self.height/2, width=self.width, height=self.height)
-
 class DubinsAC2Denv(gym.Env):
 	# gym.Env creates an environment that follows gym interface
     metadata = {'render.modes': ['human']}
@@ -150,15 +138,15 @@ class DubinsAC2Denv(gym.Env):
 
         # draw red aircraft
         pos, _, att, pos_hist = self._redAC.get_sta()
+        self.viewer.draw_polyline(pos_hist[ ::5 , [-2, -3]],) # draws line
         red_ac_img = rendering.Image(os.path.join(__location__, 'images/f16_red.png'), 48, 48)
         red_ac_img._color.vec4 = (1, 1, 1, 1) # siyah renk hatası giderildi / 15.02 
         jtransform = rendering.Transform(rotation= -att[2], translation= np.array([pos[1], pos[0]]))
         red_ac_img.add_attr(jtransform)
         self.viewer.onetime_geoms.append(red_ac_img)
-        self.viewer.draw_polyline(pos_hist[ ::5 , [-2, -3]],) # draws line
 
-        # transform2 = rendering.Transform(translation=(self.goal_pos[1], self.goal_pos[0]))  # Relative offset
-        # self.viewer.draw_circle().add_attr(transform2) # uçağın merkezindeki nokta yok edildi / 15.02
+        transform2 = rendering.Transform(translation=(self.goal_pos[1], self.goal_pos[0]))  # Relative offset
+        self.viewer.draw_circle(1).add_attr(transform2) # uçağın merkezindeki nokta yok edildi / 15.02
 
         transform2 = rendering.Transform(translation=(self.goal_pos[1], self.goal_pos[0]))  # Relative offset
         self.viewer.draw_circle(self.d_min,filled=False).add_attr(transform2)
@@ -275,6 +263,8 @@ class DubinsAC2Denv(gym.Env):
 
 
     def _terminal_reward_2(self): # before assignment hatası
+        self.d_min = 25
+        self.d_max = 150
         INFO = 'win/loss' # değiştirilecek
         REWARD = 0 # credit: kerem aydın
         DAMAGE_redAC = 0
@@ -312,7 +302,10 @@ class DubinsAC2Denv(gym.Env):
             REWARD = -100
             print(' Blue is out of defined limits (Exceeded leftmost limit)')
             TERMINALSTATE = True
-	# elif self._action_time_s
+        elif distance_<= self.d_min: # collision reward (terminal)
+            REWARD = -300
+            print(' Aircrafts crashed into each other!')
+            TERMINALSTATE = True
         else:
             TERMINALSTATE = False
 

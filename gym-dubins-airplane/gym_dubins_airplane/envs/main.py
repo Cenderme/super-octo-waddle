@@ -36,7 +36,7 @@ if __name__ == '__main__':
         reward_history.append(reward)
 
         if RenderSteps:
-            time.sleep(.5)
+            time.sleep(.01)
             env.render()
         if DebugInfo:
                 # if(reward == temp_r and score == temp_s and damage == temp_d):
