@@ -29,7 +29,7 @@ if __name__ == '__main__':
     for i in range(10000):
         sleep(.5)
 
-        state, reward, terminate, damage, info = env.step(
+        state, reward, _, terminate, damage, info = env.step(
             env.action_space.sample())  # take a random action
         score += reward
         damage_red += damage
@@ -37,7 +37,6 @@ if __name__ == '__main__':
         reward_history.append(reward)
 
         if RenderSteps:
-            time.sleep(.01)
             env.render()
         if DebugInfo:
             if (reward == temp_r and score == temp_s and damage == temp_d):

@@ -387,13 +387,6 @@ class DubinsAC2Denv(gym.Env):
                 print(' Aircrafts crashed into each other! Reward: {}'.format(
                     reward_sca))
                 TERMINALSTATE = True
-        if self.ATA_deg < 60 and self.AA_deg < 30 and self.d_min < distance_ < self.d_max:  # dominant area, blue win (for how much duration? 1 action-time?)
-            if random.random() < 0.8:  # chance to hit enemy in dominant area
-                REWARD = 100
-                DAMAGE_redAC = 1
-                print('\n[HIT] Red')
-                self.red_cone._color.vec4 = (1, 1, 1, .6)
-                self.blue_cone._color.vec4 = (1, 1, 1, .6)
             else:
                 TERMINALSTATE = False
 
