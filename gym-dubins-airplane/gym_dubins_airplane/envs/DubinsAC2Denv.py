@@ -97,6 +97,16 @@ class DubinsAC2Denv(gym.Env):
         """In part below red aircraft bounces back from edges of map 
         to stay in sight of user"""
 
+        # if (any(self.Bpos < 96) or any(self.Bpos > self.window_height - 96)):
+        #     pos, _, att, _ = self._redAC.get_sta()
+        #     diff_ang = np.arctan((400-pos[1])/(400-pos[0])) - np.pi/2
+        #     if (pos[0] >= 400 and pos[1] >= 400):
+        #         if(np.abs(att[2]) <= np.pi/2):
+
+        #     if (att[2] - diff_ang < 180):
+        #         self._redAC._heading_rad += np.deg2rad(3)
+        #     else:
+        #         self._redAC._heading_rad -= np.deg2rad(3)
         if self._redAC._pos_m[0] > self.window_width:
             self._redAC._heading_rad = np.mod(
                 self._redAC._heading_rad - np.pi / 2, 2 * np.pi)
@@ -246,7 +256,7 @@ class DubinsAC2Denv(gym.Env):
 
         blue_red = self.viewer.draw_polygon(
             ((720, 80), (720, 112), (496 + self.red_health * 64, 112),
-             (496 + self.red_health * 50, 80)))
+             (496 + self.red_health * 64, 80)))
         blue_red._color.vec4 = (0.30, 0.65, 1.00, 0.8 - .25 * self.blue_health)
         blue_red = self.viewer.draw_polyline(
             ((720, 80), (720, 112), (496, 112), (496, 80), (720, 80)),
@@ -255,13 +265,15 @@ class DubinsAC2Denv(gym.Env):
 
         health_red = self.viewer.draw_polygon(
             ((80, 80), (80, 112), (304 - self.red_health * 64, 112),
-             (304 - self.red_health * 50, 80)))
+             (304 - self.red_health * 64, 80)))
         health_red._color.vec4 = (0.83, 0.13, 0.18,
                                   0.8 - .25 * self.red_health)
         health_red = self.viewer.draw_polyline(
             ((80, 80), (80, 112), (304, 112), (304, 80), (80, 80)),
             color=(0.00, 0.00, 0.00),
             linewidth=3)
+        print("Red damage: ", self.red_health, "Blue damage: ",
+              self.blue_health)
 
         return self.viewer.render()
 
@@ -409,7 +421,7 @@ class DubinsAC2Denv(gym.Env):
             ) > 150 and self.d_min < self.distance_ < self.d_max:  # lose
                 reward_sca = -3
                 print(' \n[DOM] Red! Reward: {}'.format(reward_sca))
-                self.blue_health -= 1
+                self.blue_health += 1
                 TERMINALSTATE = True
             elif (any(self.Bpos < 0) or any(self.Bpos > self.window_height)):
                 # exceeding limits of map
@@ -423,7 +435,7 @@ class DubinsAC2Denv(gym.Env):
                 TERMINALSTATE = True
             else:
                 TERMINALSTATE = False
-        self.red_health -= DAMAGE_redAC
+        self.red_health += DAMAGE_redAC
 
         return reward_sca, TERMINALSTATE, DAMAGE_redAC, {
             'result': INFO,
