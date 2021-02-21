@@ -37,7 +37,7 @@ def dqn(n_episodes=10000,
     """
     scores = []  # list containing scores from each episode
     score_mean = []
-    scores_window = deque(maxlen=100)  # last 100 scores
+    scores_window = deque(maxlen=100)
     eps = eps_start  # initialize epsilon
 
     start_time = time.time()
@@ -45,7 +45,7 @@ def dqn(n_episodes=10000,
     for i_episode in range(1, n_episodes + 1):
         # episode loop
         # get current state from environment
-        state = env.reset()  # It returns an initial observation (random)
+        state = env.reset()
         score = 0  # score at the start of new episode
         damage_red = 0  # damage dealt to red AC at the start of new episode
         # play a sequence (1 episode)
@@ -57,7 +57,7 @@ def dqn(n_episodes=10000,
             # env.step(action): Step the environment by one action timestep. Return
             # observation, reward and done
             if RenderOpt:
-                env.render()  # will display a popup window
+                env.render()
                 time.sleep(0.01)
             next_state, reward_t, reward_s, done, damage, _ = env.step(action)
             reward = reward_t + reward_s
@@ -69,12 +69,10 @@ def dqn(n_episodes=10000,
                 done = True
             if done:
                 break
-        scores_window.append(
-            score
-        )  # save most recent score, adds collected reward at the end of episode
-        scores.append(score)  # save most recent score
+        scores_window.append(score)
+        scores.append(score)
         score_mean.append(np.mean(scores_window))
-        eps = max(eps_end, eps_decay * eps)  # decrease epsilon at each episode
+        eps = max(eps_end, eps_decay * eps)
         if damage_red == 3:
             print("Blue wins! Dominated!")
             print(
@@ -95,8 +93,7 @@ def dqn(n_episodes=10000,
             print(
                 '\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'
                 .format(i_episode, np.mean(scores_window)))
-            torch.save(agent.qnetwork_local.state_dict(),
-                       'checkpoint.pth')  # Function to save model parameters
+            torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pth')
             break
     elapsed_time = time.time() - start_time
     print("Training duration: ", elapsed_time)

@@ -78,14 +78,12 @@ class DubinsAC3Denv(gym.Env):
                                             dtype=np.float32)
 
         if actions == 'discrete':
-            self.action_space = spaces.Discrete(
-                13)  # 0 -> 4 bank angle command: -90 45 0 45 90
+            self.action_space = spaces.Discrete(13)
         else:
-            self.action_space = spaces.Box(
-                low=np.array([-1., -1.]),
-                high=np.array([1., 1.]),
-                shape=(2, ),
-                dtype=np.float32)  # 0 -> 4 bank angle command: -90 45 0 45 90
+            self.action_space = spaces.Box(low=np.array([-1., -1.]),
+                                           high=np.array([1., 1.]),
+                                           shape=(2, ),
+                                           dtype=np.float32)
 
         self.seed(2)
 
@@ -182,18 +180,15 @@ class DubinsAC3Denv(gym.Env):
         self.viewer.onetime_geoms.append(red_ac_img)
         self.viewer.draw_polyline(pos_hist[::5, [-2, -3]], ).set_color(1, 0, 0)
 
-        transform2 = rendering.Transform(
-            translation=(self.goal_pos[1],
-                         self.goal_pos[0]))  # Relative offset
+        transform2 = rendering.Transform(translation=(self.goal_pos[1],
+                                                      self.goal_pos[0]))
         self.viewer.draw_circle(5).add_attr(transform2)
 
-        transform2 = rendering.Transform(
-            translation=(self.goal_pos[1],
-                         self.goal_pos[0]))  # Relative offset
+        transform2 = rendering.Transform(translation=(self.goal_pos[1],
+                                                      self.goal_pos[0]))
         self.viewer.draw_circle(50, filled=False).add_attr(transform2)
 
-        transform3 = rendering.Transform(
-            translation=(pos[1], pos[0]))  # red dangerous circle
+        transform3 = rendering.Transform(translation=(pos[1], pos[0]))
         self.viewer.draw_circle(250, filled=False).add_attr(transform3)
 
         l, r, t, b = 0, 10, -pos[2] / self.window_z * self.window_height, 0

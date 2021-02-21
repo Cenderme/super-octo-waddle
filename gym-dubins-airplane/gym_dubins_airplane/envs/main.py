@@ -18,8 +18,7 @@ if __name__ == '__main__':
     # simple_ac = ACEnvironment2D()
     # simple_ac.takeaction(0.,0.,5.)
 
-    env = gym.make('dubinsAC2D-v0',
-                   actions='discrete')  # returns the environment
+    env = gym.make('dubinsAC2D-v0', actions='discrete')
     state = env.reset()
 
     reward_history = []
@@ -27,10 +26,10 @@ if __name__ == '__main__':
     damage_red = 0
     temp_r = temp_s = temp_d = index_di = 0
     for i in range(10000):
-        sleep(.05)
+        # sleep(.05)
 
         state, reward, _, terminate, damage, info = env.step(
-            env.action_space.sample())  # take a random action
+            env.action_space.sample())
         score += reward
         damage_red += damage
 
@@ -65,4 +64,4 @@ if __name__ == '__main__':
             state = env.reset()
             score = 0
             damage_red = 0
-    env.close()  # closes the environment rendering window
+    env.close()

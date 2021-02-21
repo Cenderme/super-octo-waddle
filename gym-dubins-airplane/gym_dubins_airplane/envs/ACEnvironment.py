@@ -45,8 +45,8 @@ class ACEnvironment2D:
         self._vel_mps = vel_mps
 
     def reset(self):
-        self._pos_m = np.zeros((1, 3), dtype=float)  # pos X,Y,Z
-        self._pos_history = np.zeros((1, 3), dtype=float)  # pos X,Y,Z
+        self._pos_m = np.zeros((1, 3), dtype=float)
+        self._pos_history = np.zeros((1, 3), dtype=float)
         self._vel_mps = 0.
 
         self._bank_rad = 0.
@@ -136,7 +136,7 @@ class ACEnvironment2D:
                 # bank, flight path and heading angle of aircraft
                 self._pos_history
             ],
-            dtype=object)  # historic position data
+            dtype=object)
 
     def sim(self, simTime_s):
 
@@ -146,13 +146,9 @@ class ACEnvironment2D:
     def takeaction(self, cmd_bank_deg, cmd_flightpath, cmd_vel_mps,
                    actiontime):
 
-        self.set_cmd_bank(
-            cmd_bank_deg
-        )  # calls set_cmd_bank for cmd_bank_deg input which is bank angle command
+        self.set_cmd_bank(cmd_bank_deg)
         # by line above self._cmd_bank_rad = np.deg2rad(_pi_bound_deg(cmd_bank_deg))
         self.set_cmd_flightpath(cmd_flightpath)
         self.set_cmd_vel(cmd_vel_mps)
 
-        return self.simfor(
-            actiontime
-        )  # sim for 5 simulation time steps to get the results of an action
+        return self.simfor(actiontime)

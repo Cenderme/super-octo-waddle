@@ -11,7 +11,7 @@ import torch.optim as optim
 import math
 import operator
 
-BUFFER_SIZE = int(1e5)  # replay buffer size
+BUFFER_SIZE = int(1e5)
 BATCH_SIZE = 256  # minibatch size
 GAMMA = 0.99  # discount factor
 TAU = 1e-3  # for soft update of target parameters
@@ -45,9 +45,9 @@ class Agent():
 
         # Q-Network
         self.qnetwork_local = QNetwork(state_size, action_size,
-                                       seed).to(device)  # main policy network
+                                       seed).to(device)
         self.qnetwork_target = QNetwork(state_size, action_size,
-                                        seed).to(device)  # target network
+                                        seed).to(device)
         self.optimizer = optim.Adam(self.qnetwork_local.parameters(), lr=LR)
         self.criterion = nn.MSELoss()
 
@@ -116,8 +116,7 @@ class Agent():
             1)[0].unsqueeze(1)
         expected_values = rewards + gamma * q_target * (1 - dones)
         output = self.qnetwork_local(states).gather(1, actions)
-        loss = F.mse_loss(output,
-                          expected_values)  # Loss Function: Mean Square Error
+        loss = F.mse_loss(output, expected_values)
         if self.compute_weights:
             with torch.no_grad():
                 weight = sum(np.multiply(weights, loss.data.cpu().numpy()))

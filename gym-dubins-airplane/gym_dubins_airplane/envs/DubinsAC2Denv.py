@@ -54,15 +54,13 @@ class DubinsAC2Denv(gym.Env):
         # blue_bank: roll(bank) angle of blue ac
 
         lowlim = np.array(
-            [-800., -self.window_height, -180., -180., -180., -180., 0.,
-             -90.])  # lower limit of feature values
+            [-800., -self.window_height, -180., -180., -180., -180., 0., -90.])
         highlim = np.array(
-            [800., self.window_height, 180., 180., 180., 180., 359.,
-             90.])  # upper limit of feature values
+            [800., self.window_height, 180., 180., 180., 180., 359., 90.])
 
-        self.observation_space = spaces.Box(
-            low=lowlim, high=highlim,
-            dtype=np.float32)  # creating the observation space
+        self.observation_space = spaces.Box(low=lowlim,
+                                            high=highlim,
+                                            dtype=np.float32)
 
         if actions == 'discrete':  # using discrete actions
             self.action_space = spaces.Discrete(15)
@@ -89,9 +87,8 @@ class DubinsAC2Denv(gym.Env):
         cmd_bank_deg = (action - 7) * 90 / 7  # bank angle command to blue ac
         # action takes values from 0 to 14
 
-        self._blueAC.takeaction(
-            cmd_bank_deg, 0, self._vel_mps,
-            self._action_time_s)  # aircraft takes action based on bank command
+        self._blueAC.takeaction(cmd_bank_deg, 0, self._vel_mps,
+                                self._action_time_s)
 
         self._redAC.takeaction(0, 0, self._vel_mps, self._action_time_s)
         """In part below red aircraft bounces back from edges of map 
@@ -155,10 +152,10 @@ class DubinsAC2Denv(gym.Env):
             i += 1
 
         _, _, hdg = self._calc_posDiff_hdg_deg(bpos, pos)
-        self._blueAC = ACEnvironment2D(
-            position=np.array([bpos[0], bpos[1], 0]),
-            vel_mps=self._vel_mps,
-            heading_deg=bhead)  # creates _blueAC object from class
+        self._blueAC = ACEnvironment2D(position=np.array([bpos[0], bpos[1],
+                                                          0]),
+                                       vel_mps=self._vel_mps,
+                                       heading_deg=bhead)
 
         self.blue_health = 0
         self.red_health = 0
@@ -226,14 +223,12 @@ class DubinsAC2Denv(gym.Env):
         self.red_cone = self.make_cone(pos, att[2])
         self.red_cone._color.vec4 = (.9, .15, .2, .3)
 
-        # transform2 = rendering.Transform(translation=(self.goal_pos[1], self.goal_pos[0]))  # Relative offset
-        transform2 = rendering.Transform(
-            translation=(self.goal_pos[1],
-                         self.goal_pos[0]))  # Relative offset
+        # transform2 = rendering.Transform(translation=(self.goal_pos[1], self.goal_pos[0]))
+        transform2 = rendering.Transform(translation=(self.goal_pos[1],
+                                                      self.goal_pos[0]))
         self.viewer.draw_circle(self.r_min, filled=False).add_attr(transform2)
 
-        transform3 = rendering.Transform(
-            translation=(pos[1], pos[0]))  # red dangerous circle
+        transform3 = rendering.Transform(translation=(pos[1], pos[0]))
         self.viewer.draw_circle(self.r_max, filled=False).add_attr(transform3)
 
         # draw blue aircraft
@@ -272,8 +267,6 @@ class DubinsAC2Denv(gym.Env):
             ((80, 80), (80, 112), (304, 112), (304, 80), (80, 80)),
             color=(0.00, 0.00, 0.00),
             linewidth=3)
-        print("Red damage: ", self.red_health, "Blue damage: ",
-              self.blue_health)
 
         return self.viewer.render()
 
@@ -453,8 +446,7 @@ class DubinsAC2Denv(gym.Env):
         reward_pot = 0
         self.distance_ = math.sqrt(
             (self._blueAC._pos_m[0] - self._redAC._pos_m[0])**2 +
-            (self._blueAC._pos_m[1] - self._redAC._pos_m[1])**
-            2)  # distance between two aircrafts
+            (self._blueAC._pos_m[1] - self._redAC._pos_m[1])**2)
 
         if Pot_RewOpt:
 

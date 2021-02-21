@@ -79,14 +79,12 @@ class DubinsAC3Denvv1(gym.Env):
                                             dtype=np.float32)
 
         if actions == 'discrete':
-            self.action_space = spaces.Discrete(
-                13)  # 0 -> 4 bank angle command: -90 45 0 45 90
+            self.action_space = spaces.Discrete(13)
         else:
-            self.action_space = spaces.Box(
-                low=np.array([-1., -1., -1.]),
-                high=np.array([1., 1., 1.]),
-                shape=(3, ),
-                dtype=np.float32)  # 0 -> 4 bank angle command: -90 45 0 45 90
+            self.action_space = spaces.Box(low=np.array([-1., -1., -1.]),
+                                           high=np.array([1., 1., 1.]),
+                                           shape=(3, ),
+                                           dtype=np.float32)
 
         self.seed(2)
 
