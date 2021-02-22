@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import math
 import numpy as np
 
@@ -93,4 +92,3 @@ class Config:
     outside_penalty = -1. / 10
 
     step_penalty = -0.01 / 10
->>>>>>> 6819adb566d3adb52b4ba0d843df0a5e09f4af63
