@@ -91,7 +91,7 @@ class DubinsAC2Denv(gym.Env):
         self._blueAC.takeaction(cmd_bank_deg, 0, self._vel_mps,
                                 self._action_time_s)
 
-        self._redAC.takeaction(0, 0, self._vel_mps, self._action_time_s)
+        self._redAC.takeaction(0, 0, 0, self._action_time_s)
         """In part below red aircraft bounces back from edges of map 
         to stay in sight of user"""
 
@@ -141,8 +141,8 @@ class DubinsAC2Denv(gym.Env):
         pos, head = self._random_pos2()
         pos[0] += 200
         pos[1] += 200
-        self._redAC = ACEnvironment2D(position=np.array([pos[0], pos[1], 0]),
-                                      vel_mps=self._vel_mps,
+        self._redAC = ACEnvironment2D(position=np.array([400, 400, 0]),
+                                      vel_mps=0,
                                       heading_deg=head)
 
         bpos, bhead = self._random_pos()
